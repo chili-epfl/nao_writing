@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MessageEchoer</string>
+    <string name="clearShapeListenerView">Clear</string>
+    <string name="sendMessage">Send</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package>
+  <name>nao_writing_android_nodes</name>
+  <version>0.1.0</version>
+  <description>The android nodes for synchronised (simulated) writing with nao</description>
+
+  <maintainer email="deanna.m.hood@gmail.com">Deanna Hood</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rosjava_build_tools</build_depend>
+  <build_depend>rosjava_messages</build_depend>
+  <run_depend>rosjava_messages</run_depend>
+
+</package>
