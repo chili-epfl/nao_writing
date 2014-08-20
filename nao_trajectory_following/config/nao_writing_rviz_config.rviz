@@ -1,0 +1,470 @@
+Panels:
+  - Class: rviz/Displays
+    Help Height: 78
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /Status1
+        - /Marker1/Namespaces1
+      Splitter Ratio: 0.5
+    Tree Height: 565
+  - Class: rviz/Selection
+    Name: Selection
+  - Class: rviz/Tool Properties
+    Expanded:
+      - /2D Pose Estimate1
+      - /2D Nav Goal1
+      - /Publish Point1
+    Name: Tool Properties
+    Splitter Ratio: 0.588679
+  - Class: rviz/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+  - Class: rviz/Time
+    Experimental: false
+    Name: Time
+    SyncMode: 0
+    SyncSource: Camera
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Cell Size: 1
+      Class: rviz/Grid
+      Color: 160; 160; 164
+      Enabled: true
+      Line Style:
+        Line Width: 0.03
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 10
+      Reference Frame: <Fixed Frame>
+      Value: true
+    - Class: rviz/InteractiveMarkers
+      Enable Transparency: true
+      Enabled: true
+      Name: InteractiveMarkers
+      Show Axes: false
+      Show Descriptions: true
+      Show Visual Aids: false
+      Update Topic: /writing_surface_placer/update
+      Value: true
+    - Alpha: 1
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        CameraBottom_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        CameraTop_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        HeadPitch_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        HeadYaw_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        LAnklePitch_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        LAnkleRoll_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LElbowRoll_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LElbowYaw_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        LHipPitch_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LHipRoll_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        LHipYawPitch_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        LKneePitch_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LShoulderPitch_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        LShoulderRoll_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LWristYaw_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        Link Tree Style: Links in Alphabetic Order
+        RAnklePitch_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        RAnkleRoll_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RElbowRoll_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RElbowYaw_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        RHipPitch_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RHipRoll_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        RHipYawPitch_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        RKneePitch_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RShoulderPitch_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        RShoulderRoll_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RWristYaw_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        gaze:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        l_ankle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        l_gripper:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        l_sole:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_wrist:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        r_ankle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        r_gripper:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        r_sole:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_wrist:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        torso:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+      Name: RobotModel
+      Robot Description: robot_description
+      TF Prefix: ""
+      Update Interval: 0
+      Value: true
+      Visual Enabled: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /visualization_markers
+      Name: Marker
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+        CameraBottom_frame:
+          Value: true
+        CameraTop_frame:
+          Value: true
+        HeadPitch_link:
+          Value: true
+        HeadYaw_link:
+          Value: true
+        LAnklePitch_link:
+          Value: true
+        LAnkleRoll_link:
+          Value: true
+        LElbowRoll_link:
+          Value: true
+        LElbowYaw_link:
+          Value: true
+        LHipPitch_link:
+          Value: true
+        LHipRoll_link:
+          Value: true
+        LHipYawPitch_link:
+          Value: true
+        LKneePitch_link:
+          Value: true
+        LShoulderPitch_link:
+          Value: true
+        LShoulderRoll_link:
+          Value: true
+        LWristYaw_link:
+          Value: true
+        RAnklePitch_link:
+          Value: true
+        RAnkleRoll_link:
+          Value: true
+        RElbowRoll_link:
+          Value: true
+        RElbowYaw_link:
+          Value: true
+        RHipPitch_link:
+          Value: true
+        RHipRoll_link:
+          Value: true
+        RHipYawPitch_link:
+          Value: true
+        RKneePitch_link:
+          Value: true
+        RShoulderPitch_link:
+          Value: true
+        RShoulderRoll_link:
+          Value: true
+        RWristYaw_link:
+          Value: true
+        base_footprint:
+          Value: true
+        base_link:
+          Value: true
+        gaze:
+          Value: true
+        l_ankle:
+          Value: true
+        l_gripper:
+          Value: true
+        l_sole:
+          Value: true
+        l_wrist:
+          Value: true
+        map:
+          Value: true
+        odom:
+          Value: true
+        r_ankle:
+          Value: true
+        r_gripper:
+          Value: true
+        r_sole:
+          Value: true
+        r_wrist:
+          Value: true
+        torso:
+          Value: true
+        writing_surface:
+          Value: true
+      Marker Scale: 0.2
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        odom:
+          base_link:
+            base_footprint:
+              map:
+                writing_surface:
+                  {}
+            torso:
+              HeadYaw_link:
+                HeadPitch_link:
+                  CameraBottom_frame:
+                    {}
+                  CameraTop_frame:
+                    {}
+                  gaze:
+                    {}
+              LHipYawPitch_link:
+                LHipRoll_link:
+                  LHipPitch_link:
+                    LKneePitch_link:
+                      LAnklePitch_link:
+                        LAnkleRoll_link:
+                          l_ankle:
+                            l_sole:
+                              {}
+              LShoulderPitch_link:
+                LShoulderRoll_link:
+                  LElbowYaw_link:
+                    LElbowRoll_link:
+                      LWristYaw_link:
+                        l_wrist:
+                          l_gripper:
+                            {}
+              RHipYawPitch_link:
+                RHipRoll_link:
+                  RHipPitch_link:
+                    RKneePitch_link:
+                      RAnklePitch_link:
+                        RAnkleRoll_link:
+                          r_ankle:
+                            r_sole:
+                              {}
+              RShoulderPitch_link:
+                RShoulderRoll_link:
+                  RElbowYaw_link:
+                    RElbowRoll_link:
+                      RWristYaw_link:
+                        r_wrist:
+                          r_gripper:
+                            {}
+      Update Interval: 0
+      Value: true
+    - Class: rviz/Camera
+      Enabled: false
+      Image Rendering: background and overlay
+      Image Topic: /nao_camera/image_raw
+      Name: Camera
+      Overlay Alpha: 0.5
+      Queue Size: 2
+      Transport Hint: raw
+      Value: false
+      Visibility:
+        Grid: true
+        InteractiveMarkers: true
+        Marker: true
+        RobotModel: true
+        TF: true
+        Value: true
+      Zoom Factor: 1
+  Enabled: true
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: map
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz/Interact
+      Hide Inactive Objects: true
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+    - Class: rviz/FocusCamera
+    - Class: rviz/Measure
+    - Class: rviz/SetInitialPose
+      Topic: /initialpose
+    - Class: rviz/SetGoal
+      Topic: /move_base_simple/goal
+    - Class: rviz/PublishPoint
+      Single click: true
+      Topic: /clicked_point
+  Value: true
+  Views:
+    Current:
+      Class: rviz/Orbit
+      Distance: 2.17945
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.06
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0
+      Name: Current View
+      Near Clip Distance: 0.01
+      Pitch: 0.720203
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+      Yaw: 3.91858
+    Saved: ~
+Window Geometry:
+  Camera:
+    collapsed: false
+  Displays:
+    collapsed: false
+  Height: 846
+  Hide Left Dock: false
+  Hide Right Dock: false
+  QMainWindow State: 000000ff00000000fd00000004000000000000013c000002c4fc0200000009fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006400fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c0061007900730100000028000002c4000000dd00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d006500720061000000022e000000be0000001600ffffff000000010000010f000002c4fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a005600690065007700730100000028000002c4000000b000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004b00000003efc0100000002fb0000000800540069006d00650100000000000004b0000002f600fffffffb0000000800540069006d0065010000000000000450000000000000000000000259000002c400000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Selection:
+    collapsed: false
+  Time:
+    collapsed: false
+  Tool Properties:
+    collapsed: false
+  Views:
+    collapsed: false
+  Width: 1200
+  X: 55
+  Y: 40

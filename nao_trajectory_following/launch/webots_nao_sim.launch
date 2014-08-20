@@ -1,0 +1,6 @@
+<launch>
+
+    <!-- Start the webots simulated nao -->
+    <node pkg="nao_trajectory_following" type="webots_nao_sim_launch.py" name="webots_sim" args="$(env WEBOTS_DIR)" output="screen" />
+    
+</launch>

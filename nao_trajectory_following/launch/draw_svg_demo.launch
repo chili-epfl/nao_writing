@@ -1,0 +1,45 @@
+<launch>
+    <arg name="svg_file" default="$(find nao_trajectory_following)/res/nao.svg" />
+    
+    <arg name="nao_handedness" default="right" />
+    <arg name="nao_ip" default="127.0.0.1" />
+    
+    <arg name="svg_sampler" default="svg_subsampler" /> <!-- svg_subsampler or svg2traj -->
+    <arg name="flip_svg_y_axis" default="true" /> <!-- for svgs which have been made with y origin at top -->
+    <arg name="sample_pts_per_cm" default="5.0" /> <!-- sample density for svg -->
+    <arg name="seconds_between_pts" default="0.1" /> <!-- seconds between points in traj generated -->
+    <arg name="seconds_for_first_pt" default="3.5" /> <!-- extra time for the robot to get to the first point in traj -->
+    <arg name="seconds_before_execution" default="0.5" /> <!-- how far in future to request execution to account for delays in transmission -->
+    <arg name="seconds_between_publishing" default="2.5" /> <!-- time to wait before repeating (-1 to not repeat) -->
+
+    <arg name="writing_surface_frame_id" default="writing_surface" /> 
+    <arg name="trajectory_visualization_topic" default="write_traj" /> 
+    <arg name="trajectory_nao_topic" default="write_traj_downsampled" />
+    <arg name="clear_writing_surface_topic" default="clear_screen" /> 
+
+    <!-- Start the message echoer which will listen for a message and request that the Nao traces it -->
+    <node pkg="nao_trajectory_following" type="publish_svg_traj.py" name="trajectory_publisher" args="--file $(arg svg_file)">
+        <param name="svg_sampler" type="str" value="$(arg svg_sampler)" />
+        <param name="flip_svg_y_axis" type="bool" value="$(arg flip_svg_y_axis)" />
+        <param name="sample_pts_per_cm" type="double" value="$(arg sample_pts_per_cm)" />
+        <param name="seconds_between_pts" type="double" value="$(arg seconds_between_pts)" />
+        <param name="seconds_for_first_pt" type="double" value="$(arg seconds_for_first_pt)" />
+        <param name="seconds_before_execution" type="double" value="$(arg seconds_before_execution)" />
+        <param name="seconds_between_publishing" type="double" value="$(arg seconds_between_publishing)" />
+    
+        <param name="writing_surface_frame_id" type="str" value="$(arg writing_surface_frame_id)" />
+        <param name="trajectory_output_topic" type="str" value="$(arg trajectory_visualization_topic)"/>
+        <param name="trajectory_output_nao_topic" type="str" value="$(arg trajectory_nao_topic)"/>        
+        <param name="clear_writing_surface_topic" type="str" value="$(arg clear_writing_surface_topic)"/>
+    </node>   
+    
+    <!-- Start the capabilities for the Nao to trace messages on a writing surface -->
+    <include file="$(find nao_trajectory_following)/launch/nao_writing_on_surface.launch" >
+        <arg name="nao_handedness" value="$(arg nao_handedness)" />
+        <arg name="nao_ip" value="$(arg nao_ip)"/>
+        <arg name="writing_surface_frame_id" value="$(arg writing_surface_frame_id)" /> 
+        <arg name="trajectory_visualization_input_topic" value="$(arg trajectory_visualization_topic)" />
+        <arg name="trajectory_nao_input_topic" value="$(arg trajectory_nao_topic)" />
+        <arg name="clear_writing_surface_topic" value="$(arg clear_writing_surface_topic)" />
+    </include>
+</launch>
