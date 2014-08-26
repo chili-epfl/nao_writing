@@ -18,19 +18,15 @@ from nav_msgs.msg import Path
 from geometry_msgs.msg import PoseStamped, Point, PointStamped
 from std_msgs.msg import String, Empty
 
+rospy.init_node("message_echoer_nao");
 
 
 #Nao parameters
 NAO_IP = rospy.get_param('~nao_ip','127.0.0.1'); #default behaviour is to connect to simulator locally
-naoConnected = True;
-naoWriting = True;
+naoWriting = rospy.get_param('~nao_writing',True); #whether or not the robot should move its arms
+naoConnected = rospy.get_param('~use_robot_in_interaction',True); #whether or not the robot is being used for the interaction (looking, etc.)
 
-if(naoConnected):
-    import robots
-    from robots import naoqi_request
-    nao = robots.Nao(ros=True, host=NAO_IP);
-else:
-    rospy.init_node("message_echoer_nao");
+
 
 NAO_HANDEDNESS = rospy.get_param('~nao_handedness','right')
 if(NAO_HANDEDNESS.lower()=='right'):
@@ -68,7 +64,7 @@ minTimeBetweenTouches = 0.1  #Seconds allowed between touches for the second one
 
 CLEAR_SURFACE_TOPIC = rospy.get_param('~clear_writing_surface_topic','clear_screen');
 SHAPE_FINISHED_TOPIC = rospy.get_param('~shape_writing_finished_topic','shape_finished');
-USER_DRAWN_SHAPES_TOPIC = rospy.get_param('~user_drawn_shapes_topic','user_shapes');
+USER_DRAWN_SHAPES_TOPIC = rospy.get_param('~user_drawn_shapes_topic','user_drawn_shapes');
 
 pub_traj = rospy.Publisher(SHAPE_TOPIC, Path, queue_size=5);
 pub_clear = rospy.Publisher(CLEAR_SURFACE_TOPIC, Empty, queue_size=5);
@@ -192,36 +188,17 @@ def make_traj_msg(shape, headerString, firstStrokeOfMessage):
     return traj
     
 ###
-            
-def lookAtShape(traj):
-    trajStartPosition = traj.poses[0].pose.position;
-    trajStartPosition_robot = tl.transformPose("base_footprint",target)
-    rospy.sleep(2.0);
-    nao.look_at([trajStartPosition.x,trajStartPosition.y,trajStartPosition.z,target_frame]); #look at shape again    
-    
+
 def lookAndAskForFeedback(toSay):
     if(naoWriting):
         #put arm down
-        nao.execute([naoqi_request("motion","angleInterpolationWithSpeed",["RArm",joints_standInit,0.2])])
+        motionProxy.angleInterpolationWithSpeed(effector,armJoints_standInit, 0.8)
     
     if(effector=="RArm"):   #person will be on our right
-        nao.look_at([0.3,-0.1,0.5,"base_link"]);
+        motionProxy.setAngles(["HeadYaw", "HeadPitch"],[-0.9639739513397217, 0.08125996589660645],0.8);
     else:                   #person will be on our left
-        nao.look_at([0.3,0.1,0.5,"base_link"]);  
+        motionProxy.setAngles(["HeadYaw", "HeadPitch"],[0.9639739513397217, 0.08125996589660645],0.8);
 
-
-def relax():    
-    pNames = "LArm"
-    pStiffnessLists = 0.0
-    pTimeLists = 1.0
-    nao.execute([naoqi_request("motion","stiffnessInterpolation",[pNames, pStiffnessLists, pTimeLists])]);
-    
-    pNames = "RArm"
-    nao.execute([naoqi_request("motion","stiffnessInterpolation",[pNames, pStiffnessLists, pTimeLists])]);
-
-    pNames = "Head"
-    nao.execute([naoqi_request("motion","stiffnessInterpolation",[pNames, pStiffnessLists, pTimeLists])]);    
-    
 def onShapeFinished(message):
     global shapeFinished;
     shapeFinished = True;
@@ -259,11 +236,13 @@ if __name__ == "__main__":
             port)        # parent broker port
         textToSpeech = ALProxy("ALTextToSpeech", NAO_IP, port)   
         textToSpeech.setLanguage('English')
-        textToSpeech.setVolume(0.2);
+        motionProxy = ALProxy("ALMotion", NAO_IP, port);
+        postureProxy = ALProxy("ALRobotPosture", NAO_IP, port)
+        
         if(naoWriting):
-            nao.setpose("StandInit");
-            [temp,joints_standInit] = nao.execute([naoqi_request("motion","getAngles",["RArm",True])]);
-            nao.execute([naoqi_request("motion","wbEnableEffectorControl",[effector,True])])
+            postureProxy.goToPosture("StandInit",0.8)
+            armJoints_standInit = motionProxy.getAngles(effector,True);
+            motionProxy.wbEnableEffectorControl(effector, True); #turn whole body motion control on
         
     print('Waiting for message to write');
 
