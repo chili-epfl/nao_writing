@@ -118,8 +118,7 @@ public class DisplayManager<T> extends ImageView implements NodeMain {
                 public void run() {
                     Log.e(TAG, "got a message at " + connectedNode.getCurrentTime().toString());
 
-                    drawable = (AnimationDrawableWithEndCallback)drawableCallable.call(message);
-
+                    AnimationDrawable drawable = (AnimationDrawableWithEndCallback)drawableCallable.call(message);
                     LayerDrawable layerDrawable;
                     Drawable currentDrawable = getDrawable();
                     if(currentDrawable == null){ //first drawable
@@ -129,9 +128,11 @@ public class DisplayManager<T> extends ImageView implements NodeMain {
                             //add new layer
                             int numExistingLayers = ((LayerDrawable) currentDrawable).getNumberOfLayers();
                             Drawable[] layers = new Drawable[numExistingLayers+1];
-                            for(int i = 0; i<numExistingLayers; i++){
+                            for(int i = 0; i<numExistingLayers-1; i++){
                                 layers[i] = ((LayerDrawable) currentDrawable).getDrawable(i);
                             }
+                            AnimationDrawable previousAnimation = ((AnimationDrawable)((LayerDrawable) currentDrawable).getDrawable(numExistingLayers-1));
+                            layers[numExistingLayers-1] = previousAnimation.getFrame(previousAnimation.getNumberOfFrames()-1); //prevent re-animation
                             layers[numExistingLayers] = drawable;
                             layerDrawable = new LayerDrawable(layers);
                             setImageDrawable(layerDrawable);
