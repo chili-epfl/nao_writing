@@ -1,8 +1,8 @@
 <launch>
-    <arg name="nao_ip" default="195.168.1.4" /> <!-- IP address of non-simulated robot (ignored if simulated) -->
-    <arg name="use_sim_nao" default="true" /> <!-- if true, webots simulation expected to be running -->
-    <arg name="nao_handedness" default="right" />  
-    
+    <arg name="use_sim_nao" default="true" />
+    <arg name="nao_handedness" default="right" />
+    <arg name="nao_ip" default="127.0.0.1" />
+      
     <!-- Name of frame representing writing surface origin (at bottom left of surface, with x to the left and y up) -->
     <arg name="writing_surface_frame_id" default="writing_surface" /> 
     
@@ -33,9 +33,6 @@
     <!-- Topic to receive clear writing surface requests on -->
     <arg name="clear_writing_surface_topic" default="clear_screen" /> 
         
-    <arg name="nao_ip_to_use" value="127.0.0.1" if="$(arg use_sim_nao)" /> <!-- look for local simulator -->
-    <arg name="nao_ip_to_use" value="$(arg nao_ip)" unless="$(arg use_sim_nao)" />
-      
         
     <!-- ##### END ARGUMENTS ##### -->    
         
