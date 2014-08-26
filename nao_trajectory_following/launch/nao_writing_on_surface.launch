@@ -1,7 +1,8 @@
 <launch>
-    <arg name="nao_handedness" default="right" />
-    <arg name="nao_ip" default="127.0.0.1" />
-      
+    <arg name="nao_ip" default="195.168.1.4" /> <!-- IP address of non-simulated robot (ignored if simulated) -->
+    <arg name="use_sim_nao" default="true" /> <!-- if true, webots simulation expected to be running -->
+    <arg name="nao_handedness" default="right" />  
+    
     <!-- Name of frame representing writing surface origin (at bottom left of surface, with x to the left and y up) -->
     <arg name="writing_surface_frame_id" default="writing_surface" /> 
     
@@ -32,20 +33,27 @@
     <!-- Topic to receive clear writing surface requests on -->
     <arg name="clear_writing_surface_topic" default="clear_screen" /> 
         
+    <arg name="nao_ip_to_use" value="127.0.0.1" if="$(arg use_sim_nao)" /> <!-- look for local simulator -->
+    <arg name="nao_ip_to_use" value="$(arg nao_ip)" unless="$(arg use_sim_nao)" />
+      
         
     <!-- ##### END ARGUMENTS ##### -->    
         
     <!-- Start RViz for display purposes -->
     <node pkg="rviz" type="rviz" name="rviz" args="--display-config=$(find nao_trajectory_following)/config/nao_writing_rviz_config.rviz" />
     
-    <!-- Start the nao-related ROS nodes -->
-    <param name="robot_description" command="$(find xacro)/xacro.py $(find nao_description)/urdf/naov4_generated_urdf/naorobot.xacro" /> 
-    <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" />   
-    <node pkg="nao_description" type="base_footprint" name="base_footprint" />
-    <node pkg="nao_driver" type="nao_sensors.py" name="nao_sensors" required="true" args="--pip=$(arg nao_ip) --pport=9559" />
+    <group if="$(arg use_sim_nao)">
+    
+        <!-- Start the nao-related ROS nodes -->
+        <param name="robot_description" command="$(find xacro)/xacro.py $(find nao_description)/urdf/naov4_generated_urdf/naorobot.xacro" /> 
+        <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" />   
+        <node pkg="nao_description" type="base_footprint" name="base_footprint" />
+        <node pkg="nao_driver" type="nao_sensors.py" name="nao_sensors" required="true" args="--pip=$(arg nao_ip) --pport=9559" />
 
-    <!-- Connect the robot to the map -->
-    <node pkg="tf" type="static_transform_publisher" name="map_footprint_broadcaster" args="0 0 0 0 0 0 /base_footprint /map 10"/>
+        <!-- Connect the robot to the map -->
+        <node pkg="tf" type="static_transform_publisher" name="map_footprint_broadcaster" args="0 0 0 0 0 0 /base_footprint /map 10"/>
+        
+    </group>
     
     <!-- Start the robot's trajectory responder (which will make the robot move) -->
     <node pkg="nao_trajectory_following" type="nao_writer_naoqi.py" name="nao_writer">
