@@ -1,21 +1,15 @@
 #!/usr/bin/env python
 
 """
-todo
+A ROS node to receive messages as a series of strokes and publish them again as requests suitable for simulated robotic writing.
 """
 
 
 import numpy
-from scipy import interpolate
-import math
-import pdb
-import matplotlib.pyplot as plt
-import time
-from enum import Enum 
 
 import rospy
 from nav_msgs.msg import Path
-from geometry_msgs.msg import PoseStamped, Point, PointStamped
+from geometry_msgs.msg import PoseStamped, Point
 from std_msgs.msg import String, Empty
 
 rospy.init_node("message_echoer_nao");
@@ -42,7 +36,7 @@ FRAME = rospy.get_param('~writing_surface_frame_id','writing_surface') ;  #Frame
 SHAPE_TOPIC = rospy.get_param('~trajectory_output_topic','/write_traj'); #Name of topic to publish shapes to
 
 if(naoWriting):
-    timeForFirstStroke = 3;                 #Time allowed for the first point in traj (seconds)
+    timeForFirstStroke = 3;#Time allowed for the first point in traj (seconds)
     timeBetweenStrokes = .7;
     dt = 0.35               #Seconds between points in traj
     delayBeforeExecuting = 3;#How far in future to request the traj be executed (to account for transmission delays and preparedness)
@@ -158,15 +152,7 @@ def make_traj_msg(shape, headerString, firstStrokeOfMessage):
 
     x_shape = downsample_1d(x_shape,factor);
     y_shape = downsample_1d(y_shape,factor);
-    '''
-    #make shape have the same number of points as the shape_modeler
-    t_current = numpy.linspace(0, 1, numPointsInShape);
-    t_desired = numpy.linspace(0, 1, numDesiredShapePoints);
-    f = interpolate.interp1d(t_current, x_shape[:,0]);
-    x_shape = f(t_desired);
-    f = interpolate.interp1d(t_current, y_shape[:,0]);
-    y_shape = f(t_desired);
-    '''
+
     numPointsInShape = len(x_shape);
     
     for i in range(numPointsInShape):
