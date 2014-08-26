@@ -42,6 +42,7 @@ import java.util.concurrent.TimeUnit;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
@@ -78,12 +79,10 @@ public class MainActivity extends RosActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-      Log.e(TAG,String.valueOf(Build.VERSION.SDK_INT));
-     // if (Build.VERSION.SDK_INT < 16) {
-          getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                  WindowManager.LayoutParams.FLAG_FULLSCREEN);
-          Log.e(TAG,"Should be fullscreen now");
-      //}
+      requestWindowFeature(Window.FEATURE_NO_TITLE); //remove title bar with app's icon and name
+      getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+              WindowManager.LayoutParams.FLAG_FULLSCREEN); //remove bar with notifications and battery level etc
+      Log.e(TAG, "Should be fullscreen now");
       setContentView(R.layout.main);
       buttonClear = (Button)findViewById(R.id.buttonClear);
       buttonClear.setOnClickListener(clearListener); // Register the onClick listener with the implementation below
@@ -170,13 +169,6 @@ public class MainActivity extends RosActivity {
             return animationDrawableWithEndCallback;
         }
     });
-      /*displayManager.setClearScreenCallable(new MessageCallable<Integer, Integer>() {
-          @Override
-          public Integer call(Integer  message) {
-              onClearScreen();
-              return 1;
-          }
-      });*/
 
       gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
           @Override
@@ -298,7 +290,7 @@ private double PX2M(double x){return PX2MM(x)/1000.0;}
         interactionManager.setClearScreenTopicName("clear_screen");
         displayManager.setClearScreenTopicName("clear_screen");
         displayManager.setFinishedShapeTopicName("shape_finished");
-        interactionManager.setUserDrawnShapeTopicName("user_shapes");
+        interactionManager.setUserDrawnShapeTopicName("user_drawn_shapes");
 
         NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(InetAddressFactory.newNonLoopback().getHostAddress());
     // At this point, the user has already been prompted to either enter the URI
