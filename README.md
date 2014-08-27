@@ -27,9 +27,10 @@ sudo ntpdate (computer's IP)
 sudo /etc/init.d/ntpd start
 ```
 
-`ntpdate -q (computer's IP)` on the robot should then give ~0 offset, indicating that the clocks are synchronised.
+`ntpdate -q (computer's IP)` should then give ~0 offset, indicating that the clocks are synchronised.
 
 ```
+export ROS_IP=(nao's IP)
 export ROS_MASTER_URI=http://(computer's IP):11311
 roslaunch nao_bringup nao.launch
 ```
