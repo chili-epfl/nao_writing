@@ -51,6 +51,7 @@ include_directories(
    nodes/trajectory_visualizer.py
    nodes/writing_surface_positioner.py
    nodes/publish_svg_traj.py
+   nodes/nao_camera_controllable.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
@@ -59,6 +60,7 @@ include_directories(
    launch/message_echoer_nao.launch
    launch/nao_writing_on_surface.launch
    launch/draw_svg_demo.launch
+   launch/nao_camera_controllable.launch
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
  )
  install(FILES
