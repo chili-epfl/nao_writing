@@ -218,7 +218,7 @@ if __name__=="__main__":
             frame_pose.orientation.z = 0.6
             frame_pose.orientation.w = -0.5
             frame_pose.position.x = 0.225
-            frame_pose.position.y = -0.032
+            frame_pose.position.y = 0.02
             frame_pose.position.z = 0.27
         elif(NAO_HANDEDNESS.lower() == 'left'):
             frame_pose.orientation.x = 0.4
