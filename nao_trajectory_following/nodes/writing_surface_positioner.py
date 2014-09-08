@@ -229,7 +229,7 @@ if __name__=="__main__":
             frame_pose.position.y = 0.032+SURFACE_WIDTH
             frame_pose.position.z = 0.27
         else:
-            print('error in handedness input')
+            rospy.logerr('error in handedness input')
         
         server = InteractiveMarkerServer("writing_surface_placer")
 

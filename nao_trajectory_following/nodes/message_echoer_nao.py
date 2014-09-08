@@ -28,7 +28,7 @@ if(NAO_HANDEDNESS.lower()=='right'):
 elif(NAO_HANDEDNESS.lower()=='left'):
     effector = "LArm"
 else: 
-    print('error in handedness param')
+    rospy.logerr('error in handedness param')
     
 #trajectory publishing parameters
 factor = 12;
@@ -94,7 +94,7 @@ strokes=[];
 def read_traj_msg(message):
     global firstStrokeOfMessage,strokes
     
-    print('Got stroke to write with '+str(len(message.poses))+' points');
+    rospy.loginfo('Got stroke to write with '+str(len(message.poses))+' points');
     if(len(message.poses)==0):
         publishMessage(strokes); 
         strokes = [];
@@ -121,7 +121,7 @@ def onShapeFinished(message):
 shapeFinished = False    
 def publishMessage(strokes):
     global shapeFinished
-    print('Got message to write with '+str(len(strokes))+' strokes');
+    rospy.loginfo('Got message to write with '+str(len(strokes))+' strokes');
     for i in range(len(strokes)):
         stroke = strokes[i];
         if(i==0):
@@ -132,12 +132,12 @@ def publishMessage(strokes):
         
         #listen for notification that the letter is finished
         shape_finished_subscriber = rospy.Subscriber(SHAPE_FINISHED_TOPIC, String, onShapeFinished);
-        print('Waiting for shape to finish');
+        rospy.loginfo('Waiting for shape to finish');
         while(not shapeFinished):
             rospy.sleep(0.1);
         shape_finished_subscriber.unregister();
         shapeFinished = False;
-        print('Shape finished.');
+        rospy.loginfo('Shape finished.');
     
     
 def make_traj_msg(shape, headerString, firstStrokeOfMessage):      
@@ -199,7 +199,7 @@ def publishShape(shape,firstStrokeOfMessage):
         if(naoConnected):
             trajStartPosition = traj.poses[0].pose.position;
             #nao.look_at([trajStartPosition.x,trajStartPosition.y,trajStartPosition.z,FRAME]); #look at shape     
-    print('publishing stroke');   
+    rospy.loginfo('publishing stroke');   
     pub_traj.publish(traj);   
     
     return trajStartPosition
@@ -230,6 +230,6 @@ if __name__ == "__main__":
             armJoints_standInit = motionProxy.getAngles(effector,True);
             motionProxy.wbEnableEffectorControl(effector, True); #turn whole body motion control on
         
-    print('Waiting for message to write');
+    rospy.loginfo('Waiting for message to write');
 
     rospy.spin();

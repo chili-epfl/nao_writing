@@ -24,7 +24,7 @@ AXIS_MASK_WY = 16
 AXIS_MASK_WZ = 32
 
 def on_traj(traj):
-    print("got traj at "+str(rospy.Time.now())) 
+    rospy.loginfo("got traj at "+str(rospy.Time.now())) 
     if(hasFallen == False): #no harm in executing trajectory
         if(effector == "LArm"):
             motionProxy.openHand("LHand");
@@ -68,15 +68,15 @@ def on_traj(traj):
         
         #wait until time instructed to start executing
         rospy.sleep(traj.header.stamp-rospy.Time.now())#+rospy.Duration(timeToStartPosition));
-        print("executing rest of traj at "+str(rospy.Time.now())) ;
+        rospy.loginfo("executing rest of traj at "+str(rospy.Time.now())) ;
         startTime = rospy.Time.now();
         #pdb.set_trace()
         #times[0]=times[1]/2;
         motionProxy.positionInterpolation(effector,space,path,axisMask,times,isAbsolute);
-        print("Time taken for rest of trajectory: "+str((rospy.Time.now()-startTime).to_sec()));
+        rospy.loginfo("Time taken for rest of trajectory: "+str((rospy.Time.now()-startTime).to_sec()));
 
     else:
-        print("Got traj but not allowed to execute it because I've fallen");
+        rospy.loginfo("Got traj but not allowed to execute it because I've fallen");
 
 class FallResponder(ALModule):
   """ Module to react to robotHasFallen events """
@@ -85,12 +85,12 @@ class FallResponder(ALModule):
       ALModule.__init__(self, name)
       self.motionProxy = motionProxy;
       memoryProxy.subscribeToEvent("robotHasFallen",name,self.has_fallen.__name__);
-      print("Subscribed");
+      rospy.loginfo("Subscribed to robotHasFallen event");
   def has_fallen(self, *_args):
       global hasFallen
       hasFallen = True;
       self.motionProxy.killAll();
-      print("Stopped task");
+      rospy.loginfo("Stopped task");
       
 if __name__ == "__main__":
     rospy.init_node("nao_writer");
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     elif(NAO_HANDEDNESS.lower()=='left'):
         effector = "LArm"
     else: 
-        print('error in handedness param')
+        rospy.logerr('error in handedness param')
 
 
 
