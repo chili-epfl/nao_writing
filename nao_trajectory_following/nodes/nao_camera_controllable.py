@@ -70,8 +70,8 @@ class NaoCam (NaoNode):
         self.fps  = rospy.get_param('~fps', 30)
 
         # ROS publishers
-        self.pub_img_ = rospy.Publisher('~image_raw', Image)#, subscriptionListener())
-        self.pub_info_ = rospy.Publisher('~camera_info', CameraInfo) 
+        self.pub_img_ = rospy.Publisher('~image_raw', Image, queue_size=10)
+        self.pub_info_ = rospy.Publisher('~camera_info', CameraInfo, queue_size=10) 
 
         # initialize camera info manager
         self.cname = "nao_camera" # maybe it's a good idea to add _top and _bottom here ...
