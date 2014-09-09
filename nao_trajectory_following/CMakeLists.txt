@@ -71,8 +71,4 @@ include_directories(
    res/nao.svg
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/res
  )
- install(PROGRAMS
-   include/svg_subsampler
-   DESTINATION bin
- )
 
