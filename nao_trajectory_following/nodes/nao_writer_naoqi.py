@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 """
-Listens for a trajectory on 'write_traj' topic and sends it to the nao via 
-pyrobots interface to naoqi SDK.
+Listens for a trajectory to write and sends it to the nao via naoqi SDK.
 
-Requires pyrobots and a running robot/simulation with ALNetwork proxies.
+Requires a running robot/simulation with ALNetwork proxies.
 
 """
 from naoqi import ALModule, ALBroker, ALProxy
-from math import sqrt
-from geometry_msgs.msg import Transform, PoseStamped
+from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Path
 import rospy
 import tf
@@ -70,8 +68,7 @@ def on_traj(traj):
         rospy.sleep(traj.header.stamp-rospy.Time.now())#+rospy.Duration(timeToStartPosition));
         rospy.loginfo("executing rest of traj at "+str(rospy.Time.now())) ;
         startTime = rospy.Time.now();
-        #pdb.set_trace()
-        #times[0]=times[1]/2;
+
         motionProxy.positionInterpolation(effector,space,path,axisMask,times,isAbsolute);
         rospy.loginfo("Time taken for rest of trajectory: "+str((rospy.Time.now()-startTime).to_sec()));
 
@@ -95,7 +92,7 @@ class FallResponder(ALModule):
 if __name__ == "__main__":
     rospy.init_node("nao_writer");
     
-    TRAJ_TOPIC = rospy.get_param('~trajectory_input_topic','/write_traj_downsampled')    
+    TRAJ_TOPIC = rospy.get_param('~trajectory_input_topic','/write_traj_nao')    
     NAO_IP = rospy.get_param('~nao_ip','127.0.0.1'); #default behaviour is 
                                         #to connect to simulator locally
     NAO_HANDEDNESS = rospy.get_param('~nao_handedness','right')
@@ -139,4 +136,3 @@ if __name__ == "__main__":
     
     rospy.spin()
     myBroker.shutdown()
-    #nao.execute([naoqi_request("motion","rest",[])]);
