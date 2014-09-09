@@ -27,7 +27,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Camera
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -64,10 +64,6 @@ Visualization Manager:
       Enabled: true
       Links:
         All Links Enabled: true
-        CameraBottom_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         CameraTop_frame:
           Alpha: 1
           Show Axes: false
@@ -75,112 +71,189 @@ Visualization Manager:
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
-        HeadPitch_link:
+        Head:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        HeadYaw_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LAnklePitch_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LAnkleRoll_link:
+        LBicep:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        LElbowRoll_link:
+        LElbow:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        LFeet:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        LElbowYaw_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LHipPitch_link:
+        LFinger11:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        LHipRoll_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LHipYawPitch_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LKneePitch_link:
+        LFinger12:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        LShoulderPitch_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LShoulderRoll_link:
+        LFinger13:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        LWristYaw_link:
+        LFinger21:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LFinger22:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LFinger23:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LForeArm:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LHip:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LPelvis:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LShoulder:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LSonar:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        LThigh:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LThumb1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LThumb2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LTibia:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
         Link Tree Style: Links in Alphabetic Order
-        RAnklePitch_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        RAnkleRoll_link:
+        Neck:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RElbowRoll_link:
+        RBicep:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RElbowYaw_link:
+        RElbow:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        RHipPitch_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RHipRoll_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        RHipYawPitch_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        RKneePitch_link:
+        RFeet:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RShoulderPitch_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        RShoulderRoll_link:
+        RFinger11:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RWristYaw_link:
+        RFinger12:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RFinger13:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RFinger21:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RFinger22:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RFinger23:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RForeArm:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RHip:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RPelvis:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RShoulder:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RSonar:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        RThigh:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RThumb1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RThumb2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RTibia:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -197,6 +270,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         l_gripper:
           Alpha: 1
           Show Axes: false
@@ -205,15 +279,16 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
         l_wrist:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         r_ankle:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         r_gripper:
           Alpha: 1
           Show Axes: false
@@ -222,11 +297,11 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
         r_wrist:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         torso:
           Alpha: 1
           Show Axes: false
@@ -247,149 +322,19 @@ Visualization Manager:
       Queue Size: 100
       Value: true
     - Class: rviz/TF
-      Enabled: true
+      Enabled: false
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        CameraBottom_frame:
-          Value: true
-        CameraTop_frame:
-          Value: true
-        HeadPitch_link:
-          Value: true
-        HeadYaw_link:
-          Value: true
-        LAnklePitch_link:
-          Value: true
-        LAnkleRoll_link:
-          Value: true
-        LElbowRoll_link:
-          Value: true
-        LElbowYaw_link:
-          Value: true
-        LHipPitch_link:
-          Value: true
-        LHipRoll_link:
-          Value: true
-        LHipYawPitch_link:
-          Value: true
-        LKneePitch_link:
-          Value: true
-        LShoulderPitch_link:
-          Value: true
-        LShoulderRoll_link:
-          Value: true
-        LWristYaw_link:
-          Value: true
-        RAnklePitch_link:
-          Value: true
-        RAnkleRoll_link:
-          Value: true
-        RElbowRoll_link:
-          Value: true
-        RElbowYaw_link:
-          Value: true
-        RHipPitch_link:
-          Value: true
-        RHipRoll_link:
-          Value: true
-        RHipYawPitch_link:
-          Value: true
-        RKneePitch_link:
-          Value: true
-        RShoulderPitch_link:
-          Value: true
-        RShoulderRoll_link:
-          Value: true
-        RWristYaw_link:
-          Value: true
-        base_footprint:
-          Value: true
-        base_link:
-          Value: true
-        gaze:
-          Value: true
-        l_ankle:
-          Value: true
-        l_gripper:
-          Value: true
-        l_sole:
-          Value: true
-        l_wrist:
-          Value: true
-        map:
-          Value: true
-        odom:
-          Value: true
-        r_ankle:
-          Value: true
-        r_gripper:
-          Value: true
-        r_sole:
-          Value: true
-        r_wrist:
-          Value: true
-        torso:
-          Value: true
-        writing_surface:
-          Value: true
       Marker Scale: 0.2
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        odom:
-          base_link:
-            base_footprint:
-              map:
-                writing_surface:
-                  {}
-            torso:
-              HeadYaw_link:
-                HeadPitch_link:
-                  CameraBottom_frame:
-                    {}
-                  CameraTop_frame:
-                    {}
-                  gaze:
-                    {}
-              LHipYawPitch_link:
-                LHipRoll_link:
-                  LHipPitch_link:
-                    LKneePitch_link:
-                      LAnklePitch_link:
-                        LAnkleRoll_link:
-                          l_ankle:
-                            l_sole:
-                              {}
-              LShoulderPitch_link:
-                LShoulderRoll_link:
-                  LElbowYaw_link:
-                    LElbowRoll_link:
-                      LWristYaw_link:
-                        l_wrist:
-                          l_gripper:
-                            {}
-              RHipYawPitch_link:
-                RHipRoll_link:
-                  RHipPitch_link:
-                    RKneePitch_link:
-                      RAnklePitch_link:
-                        RAnkleRoll_link:
-                          r_ankle:
-                            r_sole:
-                              {}
-              RShoulderPitch_link:
-                RShoulderRoll_link:
-                  RElbowYaw_link:
-                    RElbowRoll_link:
-                      RWristYaw_link:
-                        r_wrist:
-                          r_gripper:
-                            {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
     - Class: rviz/Camera
       Enabled: false
       Image Rendering: background and overlay
@@ -467,4 +412,4 @@ Window Geometry:
     collapsed: false
   Width: 1200
   X: 55
-  Y: 40
+  Y: 20
