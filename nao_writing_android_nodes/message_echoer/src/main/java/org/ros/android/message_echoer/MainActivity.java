@@ -47,7 +47,7 @@ public class MainActivity extends RosActivity {
     private static final java.lang.String TAG = "messageEchoer";
 
     private DisplayManager displayManager;
-    private SignatureView userDrawingsView;
+    private UserDrawingView userDrawingsView;
     private Button buttonClear;
     private Button buttonSend;
     private ArrayList< ArrayList<double[]> > userDrawnMessage = new ArrayList<ArrayList<double[]>>();
@@ -73,7 +73,7 @@ public class MainActivity extends RosActivity {
         buttonSend = (Button)findViewById(R.id.buttonSend);
         buttonSend.setOnClickListener(sendListener); // Register the onClick listener with the implementation above
 
-        userDrawingsView = (SignatureView)findViewById(R.id.signature);
+        userDrawingsView = (UserDrawingView)findViewById(R.id.signature);
         userDrawingsView.setStrokeFinishedCallable(new MessageCallable<Integer, ArrayList<double[]>>() {
             @Override
             public Integer call(ArrayList<double[]>  message) {

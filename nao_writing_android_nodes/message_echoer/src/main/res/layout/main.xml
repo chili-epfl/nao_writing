@@ -38,10 +38,10 @@ android:layout_height="fill_parent">
         android:layout_gravity="bottom|left">
         <!--android:src="@drawable/icon"-->
     </org.ros.android.message_echoer.DisplayManager>
-    <org.ros.android.message_echoer.SignatureView
+    <org.ros.android.message_echoer.UserDrawingView
         android:layout_height="720dp"
         android:id="@+id/signature" android:layout_width="fill_parent"
         android:baselineAligned="false"
         android:layout_gravity="bottom|right">
-    </org.ros.android.message_echoer.SignatureView>
+    </org.ros.android.message_echoer.UserDrawingView>
 </FrameLayout>
