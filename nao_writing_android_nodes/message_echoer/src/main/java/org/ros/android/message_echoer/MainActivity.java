@@ -150,8 +150,10 @@ public class MainActivity extends RosActivity {
         // At this point, the user has already been prompted to either enter the URI
         // of a master to use or to start a master locally.
         nodeConfiguration.setMasterUri(getMasterUri());
+        String hostIp = getMasterUri().getHost();
+        Log.d(TAG, "Host's IP address: "+hostIp);
 
-        NtpTimeProvider ntpTimeProvider = new NtpTimeProvider(InetAddressFactory.newFromHostString("192.168.1.3"),nodeMainExecutor.getScheduledExecutorService());
+        NtpTimeProvider ntpTimeProvider = new NtpTimeProvider(InetAddressFactory.newFromHostString(hostIp),nodeMainExecutor.getScheduledExecutorService());
         ntpTimeProvider.startPeriodicUpdates(1, TimeUnit.MINUTES);
         nodeConfiguration.setTimeProvider(ntpTimeProvider);
 
