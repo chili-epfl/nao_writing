@@ -46,7 +46,7 @@ public class MainActivity extends RosActivity {
     private InteractionManagerNode interactionManagerNode;
     private static final java.lang.String TAG = "messageEchoer";
 
-    private DisplayManager displayManager;
+    private SystemDrawingViewNode systemDrawingViewNode;
     private UserDrawingView userDrawingsView;
     private Button buttonClear;
     private Button buttonSend;
@@ -82,9 +82,9 @@ public class MainActivity extends RosActivity {
             }
         });
 
-        displayManager = (DisplayManager) findViewById(R.id.image);
-        displayManager.setTopicName("write_traj");
-        displayManager.setMessageType(nav_msgs.Path._TYPE);
+        systemDrawingViewNode = (SystemDrawingViewNode) findViewById(R.id.image);
+        systemDrawingViewNode.setTopicName("write_traj");
+        systemDrawingViewNode.setMessageType(nav_msgs.Path._TYPE);
 
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
@@ -93,7 +93,7 @@ public class MainActivity extends RosActivity {
                 float y = e.getY();
                 Log.e(TAG, "Double tap at: ["+String.valueOf(x)+", "+String.valueOf(y)+"]");
                 //publish touch event in world coordinates instead of tablet coordinates
-                interactionManagerNode.publishGestureInfoMessage(DisplayMethods.PX2M(x), DisplayMethods.PX2M(displayManager.getHeight() - y));
+                interactionManagerNode.publishGestureInfoMessage(DisplayMethods.PX2M(x), DisplayMethods.PX2M(systemDrawingViewNode.getHeight() - y));
                 longClicked = true;
             }
         });
@@ -103,7 +103,7 @@ public class MainActivity extends RosActivity {
         //convert from pixels in 'tablet frame' to metres in 'robot frame'
         for(double[] point : points){
             point[0] = DisplayMethods.PX2M(point[0]);                              //x coordinate
-            point[1] = DisplayMethods.PX2M(displayManager.getHeight() - point[1]); //y coordinate
+            point[1] = DisplayMethods.PX2M(systemDrawingViewNode.getHeight() - point[1]); //y coordinate
         }
         //interactionManagerNode.publishUserDrawnShapeMessage(points);
         Log.e(TAG, "Adding stroke to message");
@@ -112,7 +112,7 @@ public class MainActivity extends RosActivity {
 
     private void onShapeDrawingFinish(){
         Log.e(TAG,"Animation finished!");
-        displayManager.publishShapeFinishedMessage();
+        systemDrawingViewNode.publishShapeFinishedMessage();
     }
 
     private View.OnClickListener sendListener = new View.OnClickListener() {
@@ -142,8 +142,8 @@ public class MainActivity extends RosActivity {
         interactionManagerNode.setTouchInfoTopicName("touch_info");
         interactionManagerNode.setGestureInfoTopicName("long_touch_info");
         interactionManagerNode.setClearScreenTopicName("clear_screen");
-        displayManager.setClearScreenTopicName("clear_screen");
-        displayManager.setFinishedShapeTopicName("shape_finished");
+        systemDrawingViewNode.setClearScreenTopicName("clear_screen");
+        systemDrawingViewNode.setFinishedShapeTopicName("shape_finished");
         interactionManagerNode.setUserDrawnShapeTopicName("user_drawn_shapes");
 
         NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(InetAddressFactory.newNonLoopback().getHostAddress());
@@ -161,7 +161,7 @@ public class MainActivity extends RosActivity {
         // The RosTextView is a NodeMain that must be executed in order to
         // start displaying incoming messages.
         Log.e(TAG, "Ready to execute");
-        nodeMainExecutor.execute(displayManager, nodeConfiguration.setNodeName("android_gingerbread/display_manager"));
+        nodeMainExecutor.execute(systemDrawingViewNode, nodeConfiguration.setNodeName("android_gingerbread/display_manager"));
         nodeMainExecutor.execute(interactionManagerNode, nodeConfiguration.setNodeName("android_gingerbread/interaction_manager"));
 
 
@@ -174,9 +174,9 @@ public class MainActivity extends RosActivity {
             }
         });
 
-        displayManager.setMessageToDrawableCallable(displayMethods.getTurnPathIntoAnimation());
-        displayMethods.setDisplayHeight(displayManager.getHeight());
-        displayMethods.setDisplayWidth(displayManager.getWidth());
+        systemDrawingViewNode.setMessageToDrawableCallable(displayMethods.getTurnPathIntoAnimation());
+        displayMethods.setDisplayHeight(systemDrawingViewNode.getHeight());
+        displayMethods.setDisplayWidth(systemDrawingViewNode.getWidth());
 
     }
 
@@ -195,7 +195,7 @@ public class MainActivity extends RosActivity {
                     int y = (int)event.getY();
                     Log.e(TAG, "Touch at: ["+String.valueOf(x)+", "+String.valueOf(y)+"]");
                     //publish touch event in world coordinates instead of tablet coordinates
-                    interactionManagerNode.publishTouchInfoMessage(DisplayMethods.PX2M(x), DisplayMethods.PX2M(displayManager.getHeight() - y));
+                    interactionManagerNode.publishTouchInfoMessage(DisplayMethods.PX2M(x), DisplayMethods.PX2M(systemDrawingViewNode.getHeight() - y));
                 }
                 break;
         }

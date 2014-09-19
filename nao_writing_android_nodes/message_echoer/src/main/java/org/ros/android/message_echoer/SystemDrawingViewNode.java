@@ -45,7 +45,7 @@ import std_msgs.*;
  * Based on sample ROSAndroid code under apache-2.0 license.
  * @author deanna.m.hood@gmail.com (Deanna Hood).
  */
-public class DisplayManager extends ImageView implements NodeMain {
+public class SystemDrawingViewNode extends ImageView implements NodeMain {
     private static final java.lang.String TAG = "DisplayManager";
     private static final boolean WAIT_TO_SYNC_TRAJ_DEFAULT = true; //if using a simulated time, this should be true, so don't wait until the requested start time of shape
     private boolean WAIT_TO_SYNC_TRAJ;
@@ -60,15 +60,15 @@ public class DisplayManager extends ImageView implements NodeMain {
     private String finishedShapeTopicName;
     private Publisher<std_msgs.Empty> clearWatchdogPublisher;
 
-    public DisplayManager(Context context) {
+    public SystemDrawingViewNode(Context context) {
         super(context);
     }
 
-    public DisplayManager(Context context, AttributeSet attrs) {
+    public SystemDrawingViewNode(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public DisplayManager(Context context, AttributeSet attrs, int defStyle) {
+    public SystemDrawingViewNode(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
