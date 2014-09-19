@@ -43,7 +43,7 @@ import android.widget.Button;
 
 
 public class MainActivity extends RosActivity {
-    private InteractionManager interactionManager;
+    private InteractionManagerNode interactionManagerNode;
     private static final java.lang.String TAG = "messageEchoer";
 
     private DisplayManager displayManager;
@@ -93,7 +93,7 @@ public class MainActivity extends RosActivity {
                 float y = e.getY();
                 Log.e(TAG, "Double tap at: ["+String.valueOf(x)+", "+String.valueOf(y)+"]");
                 //publish touch event in world coordinates instead of tablet coordinates
-                interactionManager.publishGestureInfoMessage(DisplayMethods.PX2M(x), DisplayMethods.PX2M(displayManager.getHeight() - y));
+                interactionManagerNode.publishGestureInfoMessage(DisplayMethods.PX2M(x), DisplayMethods.PX2M(displayManager.getHeight() - y));
                 longClicked = true;
             }
         });
@@ -105,7 +105,7 @@ public class MainActivity extends RosActivity {
             point[0] = DisplayMethods.PX2M(point[0]);                              //x coordinate
             point[1] = DisplayMethods.PX2M(displayManager.getHeight() - point[1]); //y coordinate
         }
-        //interactionManager.publishUserDrawnShapeMessage(points);
+        //interactionManagerNode.publishUserDrawnShapeMessage(points);
         Log.e(TAG, "Adding stroke to message");
         userDrawnMessage.add(points);
     }
@@ -118,9 +118,9 @@ public class MainActivity extends RosActivity {
     private View.OnClickListener sendListener = new View.OnClickListener() {
         public void onClick(View v) {
             Log.e(TAG, "onClick() called - send button");
-            interactionManager.publishUserDrawnMessageMessage(userDrawnMessage);
+            interactionManagerNode.publishUserDrawnMessageMessage(userDrawnMessage);
             userDrawnMessage.clear();
-            interactionManager.publishClearScreenMessage();  //clear display of robot-drawn message
+            interactionManagerNode.publishClearScreenMessage();  //clear display of robot-drawn message
             userDrawingsView.clear(); //clear display of user-drawn shapes (would have liked to have
             // done this with a callback upon receipt of clearScreenMessage, but that thread isn't allowed to 'touch' signatureView)
         }
@@ -129,7 +129,7 @@ public class MainActivity extends RosActivity {
     private View.OnClickListener clearListener = new View.OnClickListener() {
         public void onClick(View v) {
             Log.e(TAG, "onClick() called - clear button");
-            interactionManager.publishClearScreenMessage();  //clear display of robot-drawn message
+            interactionManagerNode.publishClearScreenMessage();  //clear display of robot-drawn message
             userDrawnMessage.clear();
             userDrawingsView.clear(); //clear display of user-drawn shapes (would have liked to have
                 // done this with a callback upon receipt of clearScreenMessage, but that thread isn't allowed to 'touch' signatureView)
@@ -138,13 +138,13 @@ public class MainActivity extends RosActivity {
 
     @Override
     protected void init(NodeMainExecutor nodeMainExecutor) {
-        interactionManager = new InteractionManager();
-        interactionManager.setTouchInfoTopicName("touch_info");
-        interactionManager.setGestureInfoTopicName("long_touch_info");
-        interactionManager.setClearScreenTopicName("clear_screen");
+        interactionManagerNode = new InteractionManagerNode();
+        interactionManagerNode.setTouchInfoTopicName("touch_info");
+        interactionManagerNode.setGestureInfoTopicName("long_touch_info");
+        interactionManagerNode.setClearScreenTopicName("clear_screen");
         displayManager.setClearScreenTopicName("clear_screen");
         displayManager.setFinishedShapeTopicName("shape_finished");
-        interactionManager.setUserDrawnShapeTopicName("user_drawn_shapes");
+        interactionManagerNode.setUserDrawnShapeTopicName("user_drawn_shapes");
 
         NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(InetAddressFactory.newNonLoopback().getHostAddress());
         // At this point, the user has already been prompted to either enter the URI
@@ -162,7 +162,7 @@ public class MainActivity extends RosActivity {
         // start displaying incoming messages.
         Log.e(TAG, "Ready to execute");
         nodeMainExecutor.execute(displayManager, nodeConfiguration.setNodeName("android_gingerbread/display_manager"));
-        nodeMainExecutor.execute(interactionManager, nodeConfiguration.setNodeName("android_gingerbread/interaction_manager"));
+        nodeMainExecutor.execute(interactionManagerNode, nodeConfiguration.setNodeName("android_gingerbread/interaction_manager"));
 
 
         DisplayMethods displayMethods = new DisplayMethods();
@@ -195,7 +195,7 @@ public class MainActivity extends RosActivity {
                     int y = (int)event.getY();
                     Log.e(TAG, "Touch at: ["+String.valueOf(x)+", "+String.valueOf(y)+"]");
                     //publish touch event in world coordinates instead of tablet coordinates
-                    interactionManager.publishTouchInfoMessage(DisplayMethods.PX2M(x), DisplayMethods.PX2M(displayManager.getHeight() - y));
+                    interactionManagerNode.publishTouchInfoMessage(DisplayMethods.PX2M(x), DisplayMethods.PX2M(displayManager.getHeight() - y));
                 }
                 break;
         }
