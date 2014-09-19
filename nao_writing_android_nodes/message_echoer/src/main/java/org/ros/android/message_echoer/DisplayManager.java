@@ -177,7 +177,7 @@ public class DisplayManager extends ImageView implements NodeMain {
         public void run() {
             Log.e(TAG, "got a message at " + mConnectedNode.getCurrentTime().toString());
 
-            AnimationDrawable drawable = (AnimationDrawableWithEndCallback)drawableCallable.call(mMessage);
+            AnimationDrawable drawable = (DisplayMethods.AnimationDrawableWithEndCallback)drawableCallable.call(mMessage);
 
             LayerDrawable layerDrawable;
             Drawable currentDrawable = getDrawable();
