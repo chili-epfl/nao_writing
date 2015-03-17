@@ -33,25 +33,12 @@
     <!-- Topic to receive clear writing surface requests on -->
     <arg name="clear_writing_surface_topic" default="clear_screen" /> 
         
-    <!-- Location of xacro file for displaying Nao robot model -->
-    <arg name="nao_xacro_path" default="$(find nao_description)/urdf/naoV40_generated_urdf/naorobot.xacro" />
-        
         
     <!-- ##### END ARGUMENTS ##### -->    
         
         
         
     <!-- Start display nodes -->
-    <node pkg="rviz" type="rviz" name="rviz" args="--display-config=$(find nao_trajectory_following)/config/nao_writing_rviz_config.rviz" />
-    <param name="robot_description" command="$(find xacro)/xacro.py $(arg nao_xacro_path)" />     
-    <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" /> 
-
-    <group if="$(arg use_sim_nao)">
-        <!-- Start the nao-related ROS nodes -->  
-        <node pkg="nao_description" type="base_footprint" name="base_footprint" />
-        <node pkg="nao_driver" type="nao_sensors.py" name="nao_sensors" required="true" args="--pip=$(arg nao_ip) --pport=9559" />
-        
-    </group>
 
     <!-- Connect the robot to the map -->
     <node pkg="tf" type="static_transform_publisher" name="map_footprint_broadcaster" args="0 0 0 0 0 0 /base_footprint /map 10"/>

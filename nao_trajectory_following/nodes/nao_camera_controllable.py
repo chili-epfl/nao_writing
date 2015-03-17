@@ -34,7 +34,7 @@
 
 import rospy
 from sensor_msgs.msg import Image, CameraInfo
-from nao_driver import NaoNode
+from naoqi_driver.naoqi_node import NaoqiNode
 import camera_info_manager
 
 
@@ -44,7 +44,7 @@ from vision_definitions import *
 PUBLISH_STATUS_TOPIC = 'camera_publishing_status';
 from std_msgs.msg import Bool
 publishStatus = False;
-class NaoCam (NaoNode):
+class NaoCam (NaoqiNode):
     def __init__(self):
         NaoNode.__init__(self)
         rospy.init_node('nao_camera')
