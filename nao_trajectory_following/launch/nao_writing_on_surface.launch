@@ -41,7 +41,7 @@
     <!-- Start display nodes -->
 
     <!-- Connect the robot to the map -->
-    <node pkg="tf" type="static_transform_publisher" name="map_footprint_broadcaster" args="0 0 0 0 0 0 /base_footprint /map 10"/>
+    <node pkg="tf" type="static_transform_publisher" name="map_footprint_broadcaster" args="0 0 0 0 0 0 /map /base_footprint 10"/>
     
     <!-- Start the robot's trajectory responder (which will make the robot move) -->
     <node pkg="nao_trajectory_following" type="nao_writer_naoqi.py" name="nao_writer">
