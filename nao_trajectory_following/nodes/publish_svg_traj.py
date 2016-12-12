@@ -27,7 +27,7 @@ import argparse
 import subprocess
 import rospy
 
-from geometry_msgs.msg import PoseStamped, Vector3
+from geometry_msgs.msg import PoseStamped, Point
 from nav_msgs.msg import Path
 from std_msgs.msg import Empty
 
@@ -35,8 +35,12 @@ def get_traj(svgfile):
     logger.info("Running " + SVG_SAMPLER + "...")
     if(SVG_SAMPLER=="svg2traj"):
         p = subprocess.Popen([SVG_SAMPLER, svgfile], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
-    elif(SVG_SAMPLER=="svg_subsampler"):    
+    elif("svg_subsampler" in SVG_SAMPLER):    
         p = subprocess.Popen([SVG_SAMPLER, svgfile, str(SAMPLE_DENSITY), SAMPLE_TYPE, YFLIP], stdout=subprocess.PIPE, stderr =    subprocess.PIPE)
+    else:
+        logger.error("Unknown SVG sampler. Should be either svg2traj or svg_subsampler")
+        import sys
+        sys.exit(1)
     
     traj, errors = p.communicate()
     logger.info(errors)
@@ -52,11 +56,11 @@ def get_traj(svgfile):
         if(SVG_SAMPLER=="svg2traj"):
             x=x_orig + float(x);
             y=y_orig + float(y);
-        elif(SVG_SAMPLER=="svg_subsampler"):
+        elif("svg_subsampler" in SVG_SAMPLER):
             x=float(x)
             y=float(y)
 
-        yield Vector3(x, y, 0) # stange values on Z! better set it to 0
+        yield Point(x, y, 0) # strange values on Z! better set it to 0
 
 
 def make_traj_msg(points):
@@ -107,6 +111,12 @@ if __name__ == "__main__":
                     help='an SVG file containing a single path')
 
     args, unknown = parser.parse_known_args()
+
+    if not args.file:
+        logger.error("You must provide a SVG file with the --file parameter!")
+        import sys
+        sys.exit(1)
+
     raw_traj = list(get_traj(args.file))
     while not rospy.is_shutdown():
         pub_clear.publish(Empty())
