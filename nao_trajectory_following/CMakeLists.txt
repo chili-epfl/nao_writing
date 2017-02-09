@@ -47,20 +47,14 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
  install(PROGRAMS
    nodes/nao_writer_naoqi.py
-   nodes/message_echoer_nao.py
    nodes/trajectory_visualizer.py
    nodes/writing_surface_positioner.py
-   nodes/publish_svg_traj.py
-   nodes/nao_camera_controllable.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.) 
  install(FILES
-   launch/message_echoer_nao.launch
    launch/nao_writing_on_surface.launch
-   launch/draw_svg_demo.launch
-   launch/nao_camera_controllable.launch
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
  )
  install(FILES

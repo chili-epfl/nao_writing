@@ -22,7 +22,7 @@
 
 
     <!-- Topic to receive trajectories for nao to write on -->
-    <arg name="trajectory_nao_input_topic" default="write_traj_downsampled" />
+    <arg name="trajectory_nao_input_topic" default="write_traj_downsampled" /> 
       
     <!-- Topic to receive trajectories to display on -->
     <arg name="trajectory_visualization_input_topic" default="write_traj" /> 
@@ -46,7 +46,7 @@
     <!-- Start the robot's trajectory responder (which will make the robot move) -->
     <node pkg="nao_trajectory_following" type="nao_writer_naoqi.py" name="nao_writer">
         <param name="nao_handedness" type="str" value="$(arg nao_handedness)"/>
-        <param name="trajectory_input_topic" type="str" value="$(arg trajectory_nao_input_topic)"/>
+        <param name="trajectory_nao_input_topic" type="str" value="$(arg trajectory_visualization_input_topic)"/>
         <param name="nao_ip" type="str" value="$(arg nao_ip)"/>
     </node>
     
@@ -60,11 +60,4 @@
         <param name="surface_height" type="double" value="$(arg writing_surface_height_m)"/>
     </node>
 
-    <!-- Start the trajectory visualization for RViz -->
-    <node pkg="nao_trajectory_following" type="trajectory_visualizer.py" name="trajectory_visualizer">
-        <param name="writing_surface_frame_id" type="str" value="$(arg writing_surface_frame_id)"/>
-        <param name="trajectory_input_topic" type="str" value="$(arg trajectory_visualization_input_topic)"/>
-        <param name="visualization_output_topic" type="str" value="$(arg trajectory_visualization_output_topic)"/>
-        <param name="clear_surface_topic" type="str" value="$(arg clear_writing_surface_topic)"/>
-    </node>
 </launch>

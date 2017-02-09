@@ -153,18 +153,15 @@ if __name__=="__main__":
     rospy.init_node("writing_surface_positioner")
         
     #method used for positioning the writing surface frame
-    POSITIONING_METHOD = rospy.get_param('~positioning_method',
-                                            'interactive_marker')
+    POSITIONING_METHOD = rospy.get_param('~positioning_method', 'interactive_marker')
     
-    #name of frame to publish as writing surface origin (at bottom left, with 
-    #x horizontal and y vertical)
+    #name of frame to publish as writing surface origin (at bottom left, with x horizontal and y vertical)
     FRAME_ID = rospy.get_param('~writing_surface_frame_id','writing_surface') 
 
     #size of marker to be displayed (default values for the galaxy note 10.1 
     #in landscape orientation
     SURFACE_WIDTH = rospy.get_param('~surface_width',0.217) 
     SURFACE_HEIGHT = rospy.get_param('~surface_height',0.136)
-        
     
     if(POSITIONING_METHOD.lower() == "fiducial_marker_detection"):
         TAG_FRAME = rospy.get_param('~tag_frame_id','tag_1') #name of frame to 
@@ -205,13 +202,13 @@ if __name__=="__main__":
 
         rate.sleep()
     
+    # we are going here !!!
     elif(POSITIONING_METHOD.lower() == "interactive_marker"):
         NAO_HANDEDNESS = rospy.get_param('~nao_handedness','right')
         
         #assign default values of pose
         frame_pose = Pose()
-        #use values from 'rosrun tf tf_echo map writing_surface' with  
-        #interactive marker in desired position
+        #use values from 'rosrun tf tf_echo map writing_surface' with interactive marker in desired position
         if(NAO_HANDEDNESS.lower() == 'right'):
             frame_pose.orientation.x = -0.4
             frame_pose.orientation.y = 0.5

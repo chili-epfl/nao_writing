@@ -8,72 +8,80 @@ Requires a running robot/simulation with ALNetwork proxies.
 from naoqi import ALModule, ALBroker, ALProxy
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Path
+from copy import deepcopy
 import rospy
 import tf
-from copy import deepcopy
-from naoqi import ALProxy
+import motion
 
-# masks for which axes naoqi is to control with its planning
-AXIS_MASK_X = 1
-AXIS_MASK_Y = 2
-AXIS_MASK_Z = 4
-AXIS_MASK_WX = 8
-AXIS_MASK_WY = 16
-AXIS_MASK_WZ = 32
 
+
+### trajectoire main robot
 def on_traj(traj):
     rospy.loginfo("got traj at "+str(rospy.Time.now())) 
     if(hasFallen == False): #no harm in executing trajectory
         if(effector == "LArm"):
             motionProxy.openHand("LHand");
-            roll = -1.7; #rotate wrist to the left (about the x axis, w.r.t. robot frame)
+            roll = -1.7 #rotate wrist to the left (about the x axis, w.r.t. robot frame)
         else:
             motionProxy.openHand("RHand");
-            roll = 1.7; #rotate wrist to the right (about the x axis, w.r.t. robot frame)
+            roll = 1.7 #rotate wrist to the right (about the x axis, w.r.t. robot frame)
 
         target = PoseStamped()
-
         target_frame = traj.header.frame_id
         target.header.frame_id = target_frame
         
-        '''
-        #go to first point then wait
-        path = []; times = [];
-        trajStartPosition = traj.poses[0].pose.position;
-        traj.poses[0].pose.position.z = 0.05
-        target.pose.position = deepcopy(traj.poses[0].pose.position)
-        target.pose.orientation = deepcopy(traj.poses[0].pose.orientation)
-        trajStartPosition_robot = tl.transformPose("base_footprint",target)
-        point = [trajStartPosition_robot.pose.position.x,trajStartPosition_robot.pose.position.y,trajStartPosition_robot.pose.position.z,roll,0,0];
+        points = []
+        timeList = []
+        time = 3.0
+        for i, trajp in enumerate(traj.poses):
         
-        path.append(point);
-        timeToStartPosition = traj.poses[0].header.stamp.to_sec();
-        times.append(timeToStartPosition);
-        motionProxy.setPosition(effector,space,point,0.5,axisMask);#,times,isAbsolute);
-        '''
-        path = []; times = [];
-        for trajp in traj.poses:
-        
-            trajp.pose.position.z = 0.05
-            
+            trajp.pose.position.z = 0.1
             target.pose.position = deepcopy(trajp.pose.position)
             target.pose.orientation = deepcopy(trajp.pose.orientation)
             target_robot = tl.transformPose("base_footprint",target)
+
             
-            point = [target_robot.pose.position.x,target_robot.pose.position.y,target_robot.pose.position.z,roll,0,0]#roll,pitch,yaw];
-            path.append(point);
-            times.append(trajp.header.stamp.to_sec() )#- timeToStartPosition);
+            points.append([0.12, target_robot.pose.position.y, target_robot.pose.position.z, roll, 0, 0])
+            timeList.append(time)
+
+            time = time + 0.036 #traj.poses[i+1].header.stamp - trajp.header.stamp
         
+
         #wait until time instructed to start executing
-        rospy.sleep(traj.header.stamp-rospy.Time.now())#+rospy.Duration(timeToStartPosition));
-        rospy.loginfo("executing rest of traj at "+str(rospy.Time.now())) ;
-        startTime = rospy.Time.now();
+        rospy.sleep(traj.header.stamp-rospy.Time.now())
+        rospy.loginfo("executing rest of traj at "+str(rospy.Time.now()))
+        startTime = rospy.Time.now()
 
-        motionProxy.positionInterpolation(effector,space,path,axisMask,times,isAbsolute);
-        rospy.loginfo("Time taken for rest of trajectory: "+str((rospy.Time.now()-startTime).to_sec()));
-
+        motionProxy.positionInterpolations(effectorList, space, ScaleAndFlipPoints(points, 1.5), axisMaskList, timeList, True)
+        rospy.loginfo("Time taken for rest of trajectory: "+str((rospy.Time.now()-startTime).to_sec()))
     else:
-        rospy.loginfo("Got traj but not allowed to execute it because I've fallen");
+        rospy.loginfo("Got traj but not allowed to execute it because I've fallen")
+
+def ScaleAndFlipPoints(matrix, scaleFactor = 2):
+
+    vectY = [m[1] for m in matrix]
+    vectZ = [m[2] for m in matrix]
+
+    meanY = sum(vectY)/float(len(vectY))
+    meanZ = sum(vectZ)/float(len(vectZ))
+    
+    # flip Y
+    vectY = [i - 2*(i - meanY) for i in vectY]
+    # scale up vector Y and be carefull to set positions that NAO can reach
+    maxY = float(max(vectY))
+    vectY = [i - maxY - 0.05 for i in vectY]
+    vectY = [(i-meanY)*scaleFactor + meanY for i in vectY]
+
+    # scale up Z
+    vectZ = [(i-meanZ)*scaleFactor + meanZ for i in vectZ]
+
+
+    points = []
+    for i, y in enumerate(vectY):
+        points.append([0.15, y, vectZ[i], matrix[0][3], 0, 0])
+
+    return points
+
 
 class FallResponder(ALModule):
   """ Module to react to robotHasFallen events """
@@ -88,11 +96,14 @@ class FallResponder(ALModule):
       hasFallen = True;
       self.motionProxy.killAll();
       rospy.loginfo("Stopped task");
-      
+   
+
+
+
 if __name__ == "__main__":
     rospy.init_node("nao_writer");
     
-    TRAJ_TOPIC = rospy.get_param('~trajectory_input_topic','/write_traj_nao')    
+    TRAJ_TOPIC = rospy.get_param('~trajectory_nao_input_topic','/write_traj_nao')    
     NAO_IP = rospy.get_param('~nao_ip','127.0.0.1'); #default behaviour is 
                                         #to connect to simulator locally
     NAO_HANDEDNESS = rospy.get_param('~nao_handedness','right')
@@ -129,10 +140,11 @@ if __name__ == "__main__":
     motionProxy.wbEnableEffectorControl(effector,True);
     rospy.sleep(2)
 
-    space      = 2
-    axisMask   = AXIS_MASK_X+AXIS_MASK_Y+AXIS_MASK_Z+AXIS_MASK_WX#+AXIS_MASK_WY#+AXIS_MASK_WY#control all the effector's axes 7 almath.AXIS_MASK_VEL    # just control position
+
+    space = motion.FRAME_ROBOT
+    effectorList = ["RArm"]
+    axisMaskList = [motion.AXIS_MASK_X+motion.AXIS_MASK_Y+motion.AXIS_MASK_Z+motion.AXIS_MASK_WX]
     isAbsolute = True
-    
     
     rospy.spin()
     myBroker.shutdown()
