@@ -43,20 +43,19 @@ def on_traj(traj):
             target_robot = tl.transformPose("base_footprint",target)
 
 
-            timeList.append(time)
-           
+            
             # ------ add time --------
+            
+            time += 0.02
             if points:
                 # if more than 3mm between points, smeans letter separation, give more time to reach this point
-                if gapBetweenPoints([points[-1][1], points[-1][2]], [target_robot.pose.position.y, target_robot.pose.position.z]) > 0.03:
-                    time = time + 0.1 #traj.poses[i+1].header.stamp - trajp.header.stamp
-                else:
-                    time = time + 0.036
-            else:
-                time = time + 0.036
+                if gapBetweenPoints([points[-1][1], points[-1][2]], [target_robot.pose.position.y, target_robot.pose.position.z]) > 0.003:
+                    time += 0.3 #traj.poses[i+1].header.stamp - trajp.header.stamp
+
 
             # ------- add position ----------
             points.append([0, target_robot.pose.position.y, target_robot.pose.position.z, roll, 0, 0])
+            timeList.append(time)
             
         
         #wait until time instructed to start executing
