@@ -8,10 +8,12 @@ Requires a running robot/simulation with ALNetwork proxies.
 from naoqi import ALModule, ALBroker, ALProxy
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Path
+from std_msgs.msg import String
 from copy import deepcopy
 import rospy
 import tf
 import motion
+import math
 
 
 
@@ -40,48 +42,86 @@ def on_traj(traj):
             target.pose.orientation = deepcopy(trajp.pose.orientation)
             target_robot = tl.transformPose("base_footprint",target)
 
-            
-            points.append([0.12, target_robot.pose.position.y, target_robot.pose.position.z, roll, 0, 0])
+
             timeList.append(time)
+           
+            # ------ add time --------
+            if points:
+                # if more than 3mm between points, smeans letter separation, give more time to reach this point
+                if gapBetweenPoints([points[-1][1], points[-1][2]], [target_robot.pose.position.y, target_robot.pose.position.z]) > 0.03:
+                    time = time + 0.1 #traj.poses[i+1].header.stamp - trajp.header.stamp
+                else:
+                    time = time + 0.036
+            else:
+                time = time + 0.036
 
-            time = time + 0.036 #traj.poses[i+1].header.stamp - trajp.header.stamp
+            # ------- add position ----------
+            points.append([0, target_robot.pose.position.y, target_robot.pose.position.z, roll, 0, 0])
+            
         
-
         #wait until time instructed to start executing
         rospy.sleep(traj.header.stamp-rospy.Time.now())
         rospy.loginfo("executing rest of traj at "+str(rospy.Time.now()))
         startTime = rospy.Time.now()
 
-        motionProxy.positionInterpolations(effectorList, space, ScaleAndFlipPoints(points, 1.5), axisMaskList, timeList, True)
+        # send position to proxy
+        motionProxy.positionInterpolations(effectorList, space, scaleAndFlipPoints(points), axisMaskList, timeList, True)
+
         rospy.loginfo("Time taken for rest of trajectory: "+str((rospy.Time.now()-startTime).to_sec()))
     else:
         rospy.loginfo("Got traj but not allowed to execute it because I've fallen")
 
-def ScaleAndFlipPoints(matrix, scaleFactor = 2):
+
+def scaleAndFlipPoints(matrix):
+
+    # windows where the robot can move its arms
+    rangeOfPossibleY = [-0.2, 0]
+    rangeOfPossibleZ = [0.0, 0.15]
+    posRefRobot = 0.3
+
+
 
     vectY = [m[1] for m in matrix]
     vectZ = [m[2] for m in matrix]
-
     meanY = sum(vectY)/float(len(vectY))
     meanZ = sum(vectZ)/float(len(vectZ))
     
     # flip Y
     vectY = [i - 2*(i - meanY) for i in vectY]
-    # scale up vector Y and be carefull to set positions that NAO can reach
+
+    # center y & z
     maxY = float(max(vectY))
-    vectY = [i - maxY - 0.05 for i in vectY]
-    vectY = [(i-meanY)*scaleFactor + meanY for i in vectY]
+    minZ = float(min(vectZ))
+
+    vectY = [i - maxY for i in vectY]
+    vectZ = [i - minZ for i in vectZ]
+
+    # scale up y
+    scaleFactorY = abs(max(rangeOfPossibleY) - min(rangeOfPossibleY))/abs(float(max(vectY)) - float(min(vectY)))
+    vectY = [i*scaleFactorY for i in vectY]
 
     # scale up Z
-    vectZ = [(i-meanZ)*scaleFactor + meanZ for i in vectZ]
+    scaleFactorZ = abs(max(rangeOfPossibleZ) - min(rangeOfPossibleZ))/abs(float(max(vectZ)) - float(min(vectZ)))
+    vectZ = [i*scaleFactorZ+posRefRobot for i in vectZ]
+
+    # compute X, the length of the arm should be approximately constant depending on z, y -> need to find x
+    z0 = 0.45
+    y0 = -0.12
+    r = 0.2
+    vectX = [math.sqrt(-math.pow((z-z0), 2) - math.pow((vectY[i]-y0), 2) + r*r) for i, z in enumerate(vectZ)]
+   
+
 
 
     points = []
     for i, y in enumerate(vectY):
-        points.append([0.15, y, vectZ[i], matrix[0][3], 0, 0])
+        points.append([vectX[i], y, vectZ[i], matrix[0][3], 0, 0])
 
     return points
 
+def gapBetweenPoints(pointa, pointb):
+
+    return math.sqrt(math.pow((pointa[0] - pointb[0]), 2) + math.pow((pointa[1] - pointb[1]), 2))
 
 class FallResponder(ALModule):
   """ Module to react to robotHasFallen events """
@@ -129,16 +169,23 @@ if __name__ == "__main__":
     motionProxy = ALProxy("ALMotion", NAO_IP, port);
     memoryProxy = ALProxy("ALMemory", NAO_IP, port);
     postureProxy = ALProxy("ALRobotPosture", NAO_IP, port)
+    trackerProxy = ALProxy("ALTracker", NAO_IP, port)
+
     fallResponder = FallResponder("fallResponder",motionProxy,memoryProxy);
+
     pub_traj = rospy.Subscriber(TRAJ_TOPIC, Path, on_traj)
+
+    pub = rospy.Publisher('roger', String, queue_size=10)
     
-    motionProxy.wbEnableEffectorControl(effector,False); #if robot has fallen it will have a hard time getting up if the effector is still trying to be kept in a particular position
+    motionProxy.wbEnableEffectorControl(effector,False) #if robot has fallen it will have a hard time getting up if the effector is still trying to be kept in a particular position
     postureProxy.goToPosture("StandInit", 0.2)
 
     tl = tf.TransformListener()
 
     motionProxy.wbEnableEffectorControl(effector,True);
     rospy.sleep(2)
+
+
 
 
     space = motion.FRAME_ROBOT
