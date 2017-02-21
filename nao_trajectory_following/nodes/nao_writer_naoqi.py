@@ -46,7 +46,7 @@ def on_traj(traj):
             
             # ------ add time --------
             
-            time += 0.02
+            time += 0.03
             if points:
                 # if more than 3mm between points, smeans letter separation, give more time to reach this point
                 if gapBetweenPoints([points[-1][1], points[-1][2]], [target_robot.pose.position.y, target_robot.pose.position.z]) > 0.003:
@@ -97,7 +97,7 @@ def scaleAndFlipPoints(matrix):
 
     # scale up y
     scaleFactorY = abs(max(rangeOfPossibleY) - min(rangeOfPossibleY))/abs(float(max(vectY)) - float(min(vectY)))
-    vectY = [i*scaleFactorY for i in vectY]
+    vectY = [i*scaleFactorY-0.02 for i in vectY]
 
     # scale up Z
     scaleFactorZ = abs(max(rangeOfPossibleZ) - min(rangeOfPossibleZ))/abs(float(max(vectZ)) - float(min(vectZ)))
@@ -106,7 +106,7 @@ def scaleAndFlipPoints(matrix):
     # compute X, the length of the arm should be approximately constant depending on z, y -> need to find x
     z0 = 0.45
     y0 = -0.12
-    r = 0.2
+    r = 0.19
     vectX = [math.sqrt(-math.pow((z-z0), 2) - math.pow((vectY[i]-y0), 2) + r*r) for i, z in enumerate(vectZ)]
    
 
