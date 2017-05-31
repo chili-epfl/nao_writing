@@ -47,7 +47,6 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
  install(PROGRAMS
    nodes/nao_writer_naoqi.py
-   nodes/trajectory_visualizer.py
    nodes/writing_surface_positioner.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
