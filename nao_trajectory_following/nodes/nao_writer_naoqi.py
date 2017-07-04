@@ -34,7 +34,7 @@ def on_traj(traj):
         
         points = []
         timeList = []
-        time = 3.0
+        time = 2.0
         for i, trajp in enumerate(traj.poses):
         
             trajp.pose.position.z = 0.1
@@ -173,8 +173,6 @@ if __name__ == "__main__":
     fallResponder = FallResponder("fallResponder",motionProxy,memoryProxy);
 
     pub_traj = rospy.Subscriber(TRAJ_TOPIC, Path, on_traj)
-
-    pub = rospy.Publisher('roger', String, queue_size=10)
     
     motionProxy.wbEnableEffectorControl(effector,False) #if robot has fallen it will have a hard time getting up if the effector is still trying to be kept in a particular position
     postureProxy.goToPosture("StandInit", 0.2)
