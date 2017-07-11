@@ -142,9 +142,10 @@ class FallResponder(ALModule):
 if __name__ == "__main__":
     rospy.init_node("nao_writer");
     
-    TRAJ_TOPIC = rospy.get_param('~trajectory_nao_input_topic','/write_traj_nao')    
-    NAO_IP = rospy.get_param('~nao_ip','127.0.0.1'); #default behaviour is 
-                                        #to connect to simulator locally
+    TRAJ_TOPIC = rospy.get_param('~trajectory_nao_input_topic','/write_traj_nao')  
+
+    NAO_IP = rospy.get_param('~nao_ip','127.0.0.1')
+    PORT = int(rospy.get_param('~nao_port','9559'))
     NAO_HANDEDNESS = rospy.get_param('~nao_handedness','right')
     if(NAO_HANDEDNESS.lower()=='right'):
         effector   = "RArm"
@@ -158,17 +159,16 @@ if __name__ == "__main__":
     # We need this broker to be able to construct
     # NAOqi modules and subscribe to other modules
     # The broker must stay alive until the program exists
-    port = 9559;
     myBroker = ALBroker("myBroker", #I'm not sure that pyrobots doesn't already have one of these open called NAOqi?
         "0.0.0.0",   # listen to anyone
         0,           # find a free port and use it
         NAO_IP,      # parent broker IP
-        port)        # parent broker port
+        PORT)        # parent broker port
     hasFallen = False;
-    motionProxy = ALProxy("ALMotion", NAO_IP, port);
-    memoryProxy = ALProxy("ALMemory", NAO_IP, port);
-    postureProxy = ALProxy("ALRobotPosture", NAO_IP, port)
-    trackerProxy = ALProxy("ALTracker", NAO_IP, port)
+    motionProxy = ALProxy("ALMotion", NAO_IP, PORT);
+    memoryProxy = ALProxy("ALMemory", NAO_IP, PORT);
+    postureProxy = ALProxy("ALRobotPosture", NAO_IP, PORT)
+    trackerProxy = ALProxy("ALTracker", NAO_IP, PORT)
 
     fallResponder = FallResponder("fallResponder",motionProxy,memoryProxy);
 

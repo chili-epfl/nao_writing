@@ -2,6 +2,7 @@
     <arg name="use_sim_nao" default="true" />
     <arg name="nao_handedness" default="right" />
     <arg name="nao_ip" default="127.0.0.1" />
+    <arg name="nao_port" default="9559" />
       
     <!-- Name of frame representing writing surface origin (at bottom left of surface, with x to the left and y up) -->
     <arg name="writing_surface_frame_id" default="writing_surface" /> 
@@ -48,6 +49,7 @@
         <param name="nao_handedness" type="str" value="$(arg nao_handedness)"/>
         <param name="trajectory_nao_input_topic" type="str" value="$(arg trajectory_visualization_input_topic)"/>
         <param name="nao_ip" type="str" value="$(arg nao_ip)"/>
+        <param name="nao_port" type="str" value="$(arg nao_port)"/>
     </node>
     
     <!-- Start the writing surface positioner to publish the TF and display it for RViz -->
