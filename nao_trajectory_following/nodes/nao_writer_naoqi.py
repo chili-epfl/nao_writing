@@ -175,7 +175,7 @@ if __name__ == "__main__":
     pub_traj = rospy.Subscriber(TRAJ_TOPIC, Path, on_traj)
     
     motionProxy.wbEnableEffectorControl(effector,False) #if robot has fallen it will have a hard time getting up if the effector is still trying to be kept in a particular position
-    postureProxy.goToPosture("StandInit", 0.2)
+    postureProxy.goToPosture("Stand", 0.2)
 
     tl = tf.TransformListener()
 

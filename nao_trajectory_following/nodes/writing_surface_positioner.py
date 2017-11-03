@@ -9,6 +9,7 @@ import roslib; roslib.load_manifest("interactive_markers")
 import rospy
 from geometry_msgs.msg import Pose
 import tf
+import math
 
 from visualization_msgs.msg import Marker, InteractiveMarkerControl
 tf_broadcaster = tf.TransformBroadcaster()
@@ -240,6 +241,11 @@ if __name__=="__main__":
             if frame_pose:
                 p = frame_pose.position
                 o = frame_pose.orientation
+                tot = math.sqrt((o.x**2 + o.y**2 + o.z**2 + o.w**2))
+                o.x /= tot
+                o.y /= tot
+                o.z /= tot
+                o.w /= tot
                 tf_broadcaster.sendTransform((p.x, p.y, p.z),
                                 (o.x, o.y, o.z, o.w),
                                 rospy.Time.now(),
