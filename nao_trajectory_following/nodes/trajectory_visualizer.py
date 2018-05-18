@@ -103,7 +103,7 @@ if __name__=="__main__":
                                     #overwrite the previous shape(s)
 
     pub_markers = rospy.Publisher(MARKER_TOPIC, Marker, queue_size=5);
-    
+
     shapeCount = 0;
     #when we get a trajectory, start publishing the animation
     traj_subscriber = rospy.Subscriber(SHAPE_TOPIC, Path, on_traj);

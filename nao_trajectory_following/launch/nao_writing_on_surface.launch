@@ -3,47 +3,47 @@
     <arg name="nao_handedness" default="right" />
     <arg name="nao_ip" default="127.0.0.1" />
     <arg name="nao_port" default="9559" />
-      
+
     <!-- Name of frame representing writing surface origin (at bottom left of surface, with x to the left and y up) -->
-    <arg name="writing_surface_frame_id" default="writing_surface" /> 
-    
+    <arg name="writing_surface_frame_id" default="writing_surface" />
+
     <!-- Method for positioning the writing surface. 'interactive_marker' for manual positioning in RViz, 'fiducial_marker_detection' for detecting a fiducial marker at the bottom left of the surface (tested with chilitags) -->
     <arg name="writing_surface_positioning_method" default="interactive_marker" />
-    
+
     <!-- Name of frame of fiducial marker if used as positioning mode -->
     <arg name="fiducial_marker_frame_id" default="tag_1" />
-    
+
     <!-- If chilitags is used as the fiducial marker detection scheme, the coordinate system of the detected tag has x up, y to the right. In future versions this may change, but for now it's necessary to rotate the frame, so the default is 'true.' If 'false' and no other processing is necessary, probably the frame can just be re-mapped and this node is unnecessary. -->
     <arg name="rotate_detected_tag_frame" default="true" />
-    
+
     <!-- Size of rectangular marker to be displayed (default values for the galaxy note 10.1 in landscape orientation, use (0.21,0.297) for A4 paper in portrait orientation) -->
-    <arg name="writing_surface_width_m" default="0.217" /> 
+    <arg name="writing_surface_width_m" default="0.217" />
     <arg name="writing_surface_height_m" default="0.136" />
-        
+
 
 
     <!-- Topic to receive trajectories for nao to write on -->
-    <arg name="trajectory_nao_input_topic" default="write_traj_downsampled" /> 
-      
+    <arg name="trajectory_nao_input_topic" default="write_traj_downsampled" />
+
     <!-- Topic to receive trajectories to display on -->
-    <arg name="trajectory_visualization_input_topic" default="write_traj" /> 
-    
+    <arg name="trajectory_visualization_input_topic" default="write_traj" />
+
     <!-- Topic to publish trajectory display markers on -->
-    <arg name="trajectory_visualization_output_topic" default="visualization_markers" /> 
+    <arg name="trajectory_visualization_output_topic" default="visualization_markers" />
 
     <!-- Topic to receive clear writing surface requests on -->
-    <arg name="clear_writing_surface_topic" default="clear_screen" /> 
-        
-        
-    <!-- ##### END ARGUMENTS ##### -->    
-        
-        
-        
+    <arg name="clear_writing_surface_topic" default="clear_screen" />
+
+
+    <!-- ##### END ARGUMENTS ##### -->
+
+
+
     <!-- Start display nodes -->
 
     <!-- Connect the robot to the map -->
     <node pkg="tf" type="static_transform_publisher" name="map_footprint_broadcaster" args="0 0 0 0 0 0 /map /base_footprint 10"/>
-    
+
     <!-- Start the robot's trajectory responder (which will make the robot move) -->
     <node pkg="nao_trajectory_following" type="nao_writer_naoqi.py" name="nao_writer">
         <param name="nao_handedness" type="str" value="$(arg nao_handedness)"/>
@@ -51,7 +51,7 @@
         <param name="nao_ip" type="str" value="$(arg nao_ip)"/>
         <param name="nao_port" type="str" value="$(arg nao_port)"/>
     </node>
-    
+
     <!-- Start the writing surface positioner to publish the TF and display it for RViz -->
     <node pkg="nao_trajectory_following" type="writing_surface_positioner.py" name="writing_surface_positioner">
         <param name="nao_handedness" type="str" value="$(arg nao_handedness)"/>
@@ -61,5 +61,12 @@
         <param name="surface_width" type="double" value="$(arg writing_surface_width_m)"/>
         <param name="surface_height" type="double" value="$(arg writing_surface_height_m)"/>
     </node>
+
+      <node pkg="nao_trajectory_following" type="trajectory_visualizer.py" name="trajectory_visualizer">
+        <param name="writing_surface_frame_id" type="str" value="$(arg writing_surface_frame_id)"/>
+          <param name="trajectory_nao_output_topic" type="str" value="$(arg trajectory_nao_output_topic)"/>
+          <param name="trajectory_nao_input_topic" type="str" value="$(arg trajectory_visualization_input_topic)"/>
+          <param name="clear_writing_surface_topic" type="str" value="$(arg clear_writing_surface_topic)"/>
+      </node>
 
 </launch>
