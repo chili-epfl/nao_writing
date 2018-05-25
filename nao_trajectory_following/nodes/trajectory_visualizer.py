@@ -95,7 +95,7 @@ if __name__=="__main__":
     rospy.init_node("trajectory_visualizer");
 
     CLEAR_TOPIC = rospy.get_param('~clear_surface_topic','clear_screen')
-    SHAPE_TOPIC = rospy.get_param('~trajectory_input_topic','write_traj')
+    SHAPE_TOPIC = rospy.get_param('~trajectory_nao_topic','write_traj')
     MARKER_TOPIC = rospy.get_param('~visualization_output_topic','visualization_markers')
     FRAME = rospy.get_param('~writing_surface_frame_id','writing_surface')
 

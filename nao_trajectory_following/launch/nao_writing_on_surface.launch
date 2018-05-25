@@ -62,11 +62,11 @@
         <param name="surface_height" type="double" value="$(arg writing_surface_height_m)"/>
     </node>
 
-      <node pkg="nao_trajectory_following" type="trajectory_visualizer.py" name="trajectory_visualizer">
+      <!-- <node pkg="nao_trajectory_following" type="trajectory_visualizer.py" name="trajectory_visualizer">
         <param name="writing_surface_frame_id" type="str" value="$(arg writing_surface_frame_id)"/>
           <param name="trajectory_nao_output_topic" type="str" value="$(arg trajectory_nao_output_topic)"/>
           <param name="trajectory_nao_input_topic" type="str" value="$(arg trajectory_visualization_input_topic)"/>
           <param name="clear_writing_surface_topic" type="str" value="$(arg clear_writing_surface_topic)"/>
-      </node>
+      </node> -->
 
 </launch>
