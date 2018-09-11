@@ -8,26 +8,24 @@ A set of ROS nodes which allow a robot to perform simulated handwriting through 
 
 ##Dependencies
 - [naoQi SDK](https://community.aldebaran.com/resources/archives/) for motion control, 
-- [nao_robot](https://github.com/ros-nao/nao_robot) for TF frames of the robot (either on a physical robot, or locally if using a simulated robot), 
-- [ROS for Android](https://github.com/rosjava/rosjava_core) for the tablet app,
-- (optional) softMotion or [cowriter-trajectory-generator](https://github.com/chili-epfl/cowriter-trajectory-generator) for the SVG demo,
-- (optional) [ros_markers](https://github.com/chili-epfl/ros_markers) for detecting the tablet's location.
+- [nao_robot](https://github.com/ros-naoqi/nao_robot) for TF frames of the robot (either on a physical robot, or locally if using a simulated robot), 
+- (optional)[cowriter-trajectory-generator](https://github.com/chili-epfl/cowriter-trajectory-generator) for the SVG demo,
 
 For more information, see the readmes in internal directories and the parameters which are available for specification in the launch files.
 
 
-##1. Usage without a tablet connected
+## Usage without a tablet connected
 
 The `nao_trajectory_following` nodes allow for receiving a message and getting a Nao robot to trace it in the air at the appropriate TF frame representing the writing surface. 
 
-####1.1 With a webots simulated Nao running
+####1 With a webots simulated Nao running
 Open the webots world at webots/projects/robots/nao/worlds/nao.wbt (you should see the nao's simulated camera, otherwise you may have license issues)
 
 ```
 roslaunch nao_trajectory_following draw_svg_demo.launch
 ```
 
-####1.2 With a [ROS-enabled Nao](https://github.com/ros-nao/nao_robot):
+####2 With a [ROS-enabled Nao](https://github.com/ros-nao/nao_robot):
 Install chrony on the computer so that the robot may sync its clock.
 
 On the robot:
@@ -52,30 +50,5 @@ On the computer acting as the ROS master:
 roslaunch nao_trajectory_following draw_svg_demo.launch use_sim_nao:=false nao_ip:=(nao's IP)
 ```
 
-##2. Usage with a tablet connected
-
-The `nao_writing_android_nodes` package provides an android-based node suitable for deployment on a tablet which displays the requested message while the robot is tracing it in the air. It can also capture user-drawn messages for the robot to draw.
-
-####2.1 With a webots simulated Nao running
-
-(With the `message_echoer` app deployed on the tablet)
-
-```
-export ROS_IP=(computer's IP)
-roslaunch nao_trajectory_following message_echoer_nao.launch
-```
-
-####2.2 With a [ROS-enabled Nao](https://github.com/ros-nao/nao_robot)
-(With the `message_echoer` app deployed on the tablet, and the steps mentioned in 1.2 conducted on the robot)
-
-On the computer acting as the ROS master:
-
-```
-export ROS_IP=(computer's IP)
-roslaunch nao_trajectory_following draw_svg_demo.launch use_sim_nao:=false nao_ip:=(nao's IP)
-```
-
 ![Photo of expected result with simulated nao](https://github.com/chili-epfl/nao_writing/raw/master/doc/nao_writing_demo.JPG)
-
-*An example result of the robot (simulated with Webots) following the user-drawn trajectory in sync with the tablet's display.*
 
